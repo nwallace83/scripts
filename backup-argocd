@@ -1,0 +1,30 @@
+#!/bin/bash
+ARGO_NAMESPACE="argo-cd"
+FORMATTED_DATE=$(date +%Y-%m-%d) 
+TMPDIR="argocd-$FORMATTED_DATE"
+BACKUP_DIR="/disk2/backup/argo-cd"
+
+main() {
+  mkdir /tmp/$TMPDIR
+
+  for I in $(kubectl get application -n $ARGO_NAMESPACE | grep -v "SYNC STATUS" | awk '{print $1}')
+  do
+    kubectl get application $I -n $ARGO_NAMESPACE -o yaml > /tmp/$TMPDIR/application-$I.yaml
+  done
+
+  for I in $(kubectl get appproject -n argo-cd | grep -v NAME | awk '{print $1}')
+  do
+    kubectl get appproject $I -n $ARGO_NAMESPACE -o yaml > /tmp/$TMPDIR/appproject-$I.yaml
+  done
+
+  tar -zcf $BACKUP_DIR/argocd-$FORMATTED_DATE.tar.gz -C /tmp $TMPDIR
+  find $BACKUP_DIR -name "argocd*.tar.gz" -mtime +30 -exec rm -f {} \;
+}
+
+cleanup () {
+  rm -rf /tmp/$TMPDIR &> /dev/null  
+}
+
+trap cleanup EXIT ERR INT TERM
+
+main

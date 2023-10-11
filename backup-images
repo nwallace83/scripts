@@ -1,0 +1,10 @@
+#!/bin/bash
+echo "running images backup for `date`"
+BACKUP_DIR="/disk2/backup"
+FORMATTED_DATE=$(date +%Y-%m-%d)
+
+tar -zcf $BACKUP_DIR/images-$FORMATTED_DATE.tar.gz /disk3/images
+
+chmod 775 $BACKUP_DIR/images-$FORMATTED_DATE.tar.gz
+
+find $BACKUP_DIR -name "images*.tar.gz" -mtime +8 -exec rm -f {} \;
