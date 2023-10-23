@@ -1,0 +1,10 @@
+#!/bin/bash
+echo "running vaultwarden backup for `date`"
+BACKUP_DIR="/disk2/backup/vaultwarden"
+FORMATTED_DATE=$(date +%Y-%m-%d)
+
+tar -zcf $BACKUP_DIR/vaultwarden-$FORMATTED_DATE.tar.gz -C /kubernetes vaultwarden
+
+chmod 775 $BACKUP_DIR/vaultwarden-$FORMATTED_DATE.tar.gz
+
+find $BACKUP_DIR -name "vaultwarden*.tar.gz" -mtime +30 -exec rm -f {} \;
