@@ -2,7 +2,7 @@
 ARGO_NAMESPACE="argo-cd"
 FORMATTED_DATE=$(date +%Y-%m-%d) 
 TMPDIR="argocd-$FORMATTED_DATE"
-BACKUP_DIR="/disk2/backup/argo-cd"
+BACKUP_DIR="/backup/argo-cd"
 
 main() {
   mkdir /tmp/$TMPDIR

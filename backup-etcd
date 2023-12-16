@@ -3,7 +3,7 @@ echo "running etcd backup for `date`"
 
 export ETCDCTL_API=3
 FORMATTED_DATE=$(date +%Y-%m-%d) 
-BACKUP_DIR="/disk2/backup/etcd"
+BACKUP_DIR="/backup/etcd"
 
 etcdctl --endpoints=https://server:2379 --cacert=/etc/kubernetes/pki/etcd/ca.crt --cert=/etc/kubernetes/pki/etcd/client.crt --key=/etc/kubernetes/pki/etcd/client.key snapshot save $BACKUP_DIR/etcd-$FORMATTED_DATE
 tar -zcf $BACKUP_DIR/etcd-$FORMATTED_DATE.tar.gz $BACKUP_DIR/etcd-$FORMATTED_DATE --remove-files

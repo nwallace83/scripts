@@ -1,9 +1,9 @@
 #!/bin/bash
 echo "running images backup for `date`"
-BACKUP_DIR="/disk2/backup"
+BACKUP_DIR="/backup"
 FORMATTED_DATE=$(date +%Y-%m-%d)
 
-tar -zcf $BACKUP_DIR/images-$FORMATTED_DATE.tar.gz /disk3/images
+tar -zcf $BACKUP_DIR/images-$FORMATTED_DATE.tar.gz /images
 
 chmod 775 $BACKUP_DIR/images-$FORMATTED_DATE.tar.gz
 

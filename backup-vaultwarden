@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "running vaultwarden backup for `date`"
-BACKUP_DIR="/disk2/backup/vaultwarden"
+BACKUP_DIR="/backup/vaultwarden"
 FORMATTED_DATE=$(date +%Y-%m-%d)
 
 tar -zcf $BACKUP_DIR/vaultwarden-$FORMATTED_DATE.tar.gz -C /kubernetes vaultwarden
