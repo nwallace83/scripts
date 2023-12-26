@@ -4,11 +4,25 @@ echo "running etcd backup for `date`"
 export ETCDCTL_API=3
 FORMATTED_DATE=$(date +%Y-%m-%d) 
 BACKUP_DIR="/backup/etcd"
+TMPDIR="etcd-$FORMATTED_DATE"
 
-etcdctl --endpoints=https://server:2379 --cacert=/etc/kubernetes/pki/etcd/ca.crt --cert=/etc/kubernetes/pki/etcd/client.crt --key=/etc/kubernetes/pki/etcd/client.key snapshot save $BACKUP_DIR/etcd-$FORMATTED_DATE
-tar -zcf $BACKUP_DIR/etcd-$FORMATTED_DATE.tar.gz $BACKUP_DIR/etcd-$FORMATTED_DATE --remove-files
+main() {
+  mkdir /tmp/$TMPDIR
 
-chmod 770 $BACKUP_DIR/etcd-$FORMATTED_DATE.tar.gz
+  etcdctl --endpoints=https://server:2379 --cacert=/etc/kubernetes/pki/etcd/ca.crt --cert=/etc/kubernetes/pki/etcd/client.crt --key=/etc/kubernetes/pki/etcd/client.key snapshot save /tmp/$TMPDIR/etcd-$FORMATTED_DATE
 
-find $BACKUP_DIR -name "*.part" -exec rm -f {} \;
-find $BACKUP_DIR -name "etcd-*.tar.gz" -mtime +30 -exec rm -f {} \;
+  tar -zvcf - -C /tmp $TMPDIR | gpg -e -o $BACKUP_DIR/etcd-$FORMATTED_DATE.tar.gz.gpg
+
+  find $BACKUP_DIR -name "*.part" -exec rm -f {} \;
+  find $BACKUP_DIR -name "etcd*.*" -mtime +30 -exec rm -f {} \;
+
+  chmod 660 $BACKUP_DIR/*
+}
+
+cleanup () {
+  rm -rf /tmp/$TMPDIR >/dev/null  
+}
+
+trap cleanup EXIT ERR INT TERM
+
+main
