@@ -3,8 +3,8 @@ echo "running minio backup for `date`"
 BACKUP_DIR="/backup"
 FORMATTED_DATE=$(date +%Y-%m-%d)
 
-tar -cvzf - /kubernetes/minio | gpg -e -o $BACKUP_DIR/minio-$FORMATTED_DATE.tar.gz.gpg
+tar -cvzf - /mnt/storage/minio | gpg -e -o $BACKUP_DIR/minio-$FORMATTED_DATE.tar.gz.gpg
 
 chmod 775 $BACKUP_DIR/minio-$FORMATTED_DATE.tar.gz.gpg
 
-find $BACKUP_DIR -name "minio*.tar.gz.gpg" -mtime +8 -exec rm -f {} \;
+find $BACKUP_DIR -name "minio*.tar.gz.gpg" -mtime +30 -exec rm -f {} \;
