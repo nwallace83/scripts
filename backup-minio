@@ -5,6 +5,6 @@ FORMATTED_DATE=$(date +%Y-%m-%d)
 
 tar -cvzf - /mnt/ssd/minio | gpg -e -o $BACKUP_DIR/minio-$FORMATTED_DATE.tar.gz.gpg
 
-chmod 775 $BACKUP_DIR/minio-$FORMATTED_DATE.tar.gz.gpg
+chmod 755 $BACKUP_DIR/minio-$FORMATTED_DATE.tar.gz.gpg
 
 find $BACKUP_DIR -name "minio*.tar.gz.gpg" -mtime +30 -exec rm -f {} \;

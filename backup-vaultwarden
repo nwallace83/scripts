@@ -9,7 +9,7 @@ main() {
 
   find $BACKUP_DIR -name "vaultwarden*.*" -mtime +30 -exec rm -f {} \;
 
-  chmod 660 $BACKUP_DIR/*
+  chmod 755 $BACKUP_DIR/*
 }
 
 main

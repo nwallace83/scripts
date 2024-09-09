@@ -22,7 +22,7 @@ main() {
   tar -zvcf - -C /tmp $TMPDIR | gpg -e -o $BACKUP_DIR/argocd-$FORMATTED_DATE.tar.gz.gpg
   find $BACKUP_DIR -name "argocd*.*" -mtime +30 -exec rm -f {} \;
 
-  chmod 660 $BACKUP_DIR/*
+  chmod 755 $BACKUP_DIR/*
 }
 
 cleanup () {
