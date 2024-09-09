@@ -3,7 +3,7 @@ echo "running minio backup for `date`"
 BACKUP_DIR="/backup"
 FORMATTED_DATE=$(date +%Y-%m-%d)
 
-tar -cvzf - /mnt/storage/minio | gpg -e -o $BACKUP_DIR/minio-$FORMATTED_DATE.tar.gz.gpg
+tar -cvzf - /mnt/ssd/minio | gpg -e -o $BACKUP_DIR/minio-$FORMATTED_DATE.tar.gz.gpg
 
 chmod 775 $BACKUP_DIR/minio-$FORMATTED_DATE.tar.gz.gpg
 
